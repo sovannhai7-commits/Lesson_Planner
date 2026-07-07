@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper to check if signed in
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Helper to check if user is an admin
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == "sovannhai@gmail.com" ||
+        request.auth.uid == "sRnvvQVEoYhfGAq17kkb0sj7qdk1" ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin")
+      );
+    }
+
+    // User profiles
+    match /users/{userId} {
+      // Allow read for any signed-in user to find other users to chat with
+      allow read: if isSignedIn();
+      // Allow write/update for any signed-in user (needed for profile creation and status updates)
+      allow write: if isSignedIn();
+    }
+
+    // Private direct messages
+    match /messages/{messageId} {
+      // Allow read if user is a participant
+      allow read: if isSignedIn() && (request.auth.uid in resource.data.participants);
+      // Allow create if user is a participant and matches senderId
+      allow create: if isSignedIn() && request.resource.data.senderId == request.auth.uid && (request.auth.uid in request.resource.data.participants);
+      // Allow update if user is a participant (needed for setting read = true)
+      allow update: if isSignedIn() && (request.auth.uid in resource.data.participants);
+      allow delete: if isSignedIn() && (request.auth.uid in resource.data.participants);
+    }
+
+    // Announcements
+    match /announcements/{announcementId} {
+      // All authenticated users can read announcements
+      allow read: if isSignedIn();
+      // Only admins can create, update, or delete announcements
+      allow write: if isAdmin();
+    }
+  }
+}

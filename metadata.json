@@ -1,0 +1,6 @@
+{
+  "name": "Khmer Lesson Planner",
+  "description": "A digital tool for Cambodian teachers to easily draft, format, and export structured Khmer lesson plans to PDF.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

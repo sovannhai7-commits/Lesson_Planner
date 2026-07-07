@@ -1,0 +1,10 @@
+{
+  "projectId": "khmer-lesson-planner",
+  "appId": "1:346885280799:web:9e7023e9257fe83673712a",
+  "apiKey": "AIzaSyDvZRXAVy3Eess7jjGileKnldjOuWRLUMw",
+  "authDomain": "khmer-lesson-planner.firebaseapp.com",
+  "firestoreDatabaseId": "(default)",
+  "storageBucket": "khmer-lesson-planner.firebasestorage.app",
+  "messagingSenderId": "346885280799",
+  "measurementId": "G-PGX8EHS49M"
+}

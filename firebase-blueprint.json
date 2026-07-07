@@ -1,0 +1,143 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User account information and roles in the Khmer Lesson Planner system.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "The unique Firebase Authentication UID of the user."
+        },
+        "name": {
+          "type": "string",
+          "description": "The full name or display name of the user."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The user's email address."
+        },
+        "role": {
+          "type": "string",
+          "enum": ["admin", "user"],
+          "description": "The role of the user."
+        },
+        "isApproved": {
+          "type": "boolean",
+          "description": "Whether the user account has been approved by an administrator."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "approved", "rejected"],
+          "description": "The approval status of the user."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp of account creation."
+        }
+      },
+      "required": ["uid", "name", "email", "role", "isApproved", "status", "createdAt"]
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "description": "System announcements posted by administrators.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique ID of the announcement."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the announcement."
+        },
+        "content": {
+          "type": "string",
+          "description": "Content body of the announcement."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp of announcement creation."
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "Email of the admin who created the announcement."
+        },
+        "createdByName": {
+          "type": "string",
+          "description": "Display name of the admin who created the announcement."
+        }
+      },
+      "required": ["id", "title", "content", "createdAt", "createdBy", "createdByName"]
+    },
+    "Message": {
+      "title": "Private Message",
+      "description": "Private text and image messages sent between users.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique ID of the message."
+        },
+        "senderId": {
+          "type": "string",
+          "description": "UID of the message sender."
+        },
+        "senderName": {
+          "type": "string",
+          "description": "Display name of the sender."
+        },
+        "receiverId": {
+          "type": "string",
+          "description": "UID of the message receiver."
+        },
+        "receiverName": {
+          "type": "string",
+          "description": "Display name of the receiver."
+        },
+        "participants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Array containing UIDs of both sender and receiver."
+        },
+        "content": {
+          "type": "string",
+          "description": "The text content of the message."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "Base64 encoded string of the attached image."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the message was sent."
+        },
+        "read": {
+          "type": "boolean",
+          "description": "Whether the message has been read by the receiver."
+        }
+      },
+      "required": ["senderId", "senderName", "receiverId", "receiverName", "participants", "content", "createdAt", "read"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Collection of registered teachers and administrators."
+    },
+    "/announcements/{announcementId}": {
+      "schema": "Announcement",
+      "description": "Collection of announcements posted by administrators."
+    },
+    "/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Collection of private direct messages between users."
+    }
+  }
+}
